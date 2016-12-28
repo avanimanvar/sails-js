@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const mongodbUri = 'mongodb://cienki:secret@ds031925.mlab.com:31925/contacts-test';
+const mongodbUri = 'mongodb://localhost:27017/exampleDb';
 const mongooseUri = uriUtil.formatMongoose(mongodbUri);
 const dbOptions = {};
 

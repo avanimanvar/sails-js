@@ -6,12 +6,16 @@ const router = express.Router();
 router.route('/')
   .post((req, res) => {
 
-    const contact = new Contact(req.body);
+var rerData = req.body;
+rerData.user_key = "dkvasani"
+console.log(rerData);
+    const contact = new Contact(rerData);
 
     contact.save((err, contact) => {
       if (err) {
         res.status(400).json(err);
       }
+      console.log(req.body);
       res.json(contact);
       // res.json({ message: 'Contact saved! '});
     });
