@@ -6,20 +6,40 @@ const router = express.Router();
 router.route('/')
   .post((req, res) => {
 
-var rerData = req.body;
-rerData.user_key = "dkvasani"
-console.log(rerData);
-    const contact = new Contact(rerData);
+    var rerData = req.body;
+    rerData.user_key = "dkvasani"
 
-    contact.save((err, contact) => {
+    const contact = new Contact(rerData);
+    var email = rerData.email;
+
+    Contact.findOne({ email }, (err, rerData) => {
       if (err) {
         res.status(400).json(err);
       }
-      console.log(req.body);
-      res.json(contact);
-      // res.json({ message: 'Contact saved! '});
+      if (rerData) {
+        res.status(400).json({
+          "errors": {
+            "email": {
+              "message": "Email` is duplicate.",
+              "name": "ValidatorError"
+            }
+          },
+          "message": "Contact email is duplicate",
+          "name": "ValidationError"
+        });
+      }
+      if (!rerData) {
+        contact.save((err, contact) => {
+          if (err) {
+            res.status(400).json(err);
+          }
+          res.json({ message: 'Contact saved! ', success:true });
+        });
+      }
     });
-    
+
+
+
   });
 
 module.exports = router;
