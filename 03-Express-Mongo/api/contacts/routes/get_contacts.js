@@ -17,12 +17,13 @@ router.route('/:page')
 
     var pageNumber = req.params.page;
     console.log(pageNumber);
-    Contact.paginate({}, { page: pageNumber, limit: 3 }, function (err, result) {
+    Contact.paginate({}, {select: 'first_name last_name email', page: pageNumber, limit: 5, sort: {created :'desc'} }, function (err, result) {
 
       if (err) {
         res.status(400).json(err);
       }
       res.json(result);
+
       // result.docs
       // result.total
       // result.limit - 10

@@ -16,6 +16,8 @@
     "express-paginate": "^0.2.2",
     "mongodb-uri": "^0.9.7",
     "mongoose": "^4.5.7",
-    "node-uuid": "^1.4.7"
+    "node-uuid": "^1.4.7",
+    "js-md5": "^0.4.1"
+
   }
 }

@@ -26,6 +26,7 @@ app.use('/api/contacts', require('./api/contacts/routes/get_contacts'));
 app.use('/api/contacts', require('./api/contacts/routes/get_contact'));
 app.use('/api/contacts', require('./api/contacts/routes/put_contact'));
 app.use('/api/contacts', require('./api/contacts/routes/delete_contact'));
+app.use('/api/auth/login', require('./api/contacts/routes/post_login'));
 
 const hostname = 'localhost';
 const port = 3001;
