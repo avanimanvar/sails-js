@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const Contact = require('../model/Contact');
 const router = express.Router();
 
+var uuid = require('node-uuid');
+
 router.route('/')
   .post((req, res) => {
 
     var rerData = req.body;
-    rerData.user_key = "dkvasani"
+    rerData.user_key = uuid.v1();
 
     const contact = new Contact(rerData);
     var email = rerData.email;

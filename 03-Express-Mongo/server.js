@@ -6,11 +6,16 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const uriUtil = require('mongodb-uri');
 
+var paginate = require('express-paginate');
+var mongoosePaginate = require('mongoose-paginate');
+
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(paginate.middleware(10, 50));
 
 const mongodbUri = 'mongodb://localhost:27017/exampleDb';
 const mongooseUri = uriUtil.formatMongoose(mongodbUri);
