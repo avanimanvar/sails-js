@@ -32,6 +32,7 @@ const hostname = 'localhost';
 const port = 3001;
 const server = app.listen(port, hostname, () => {
 
+//connect to our database
   mongoose.connect(mongooseUri, dbOptions, (err) => {
     if (err) {
       console.log(err);

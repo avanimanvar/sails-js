@@ -3,25 +3,19 @@ const mongoose = require('mongoose');
 const Contact = require('../model/Contact');
 const router = express.Router();
 
-
 var uuid = require('node-uuid');
 var md5 = require('js-md5');
-
-
+var validator = require("email-validator");
+var responseData = require('../../../response');
 
 router.route('/')
   .post((req, res) => {
-
     var rerData = req.body;
     rerData.user_key = uuid.v1();
-    //md5(req.body.password);
-
-
     const contact = new Contact(rerData);
     var email = rerData.email;
 
     if (!rerData.password) {
-      console.log('in');
       res.status(400).json({
         "errors": {
           "password": {
@@ -30,6 +24,19 @@ router.route('/')
           }
         },
         "message": "Password field is missing",
+        "name": "ValidationError"
+      });
+      res.end();
+    } else if (rerData.email && !validator.validate(rerData.email)) {
+
+      res.status(400).json({
+        "errors": {
+          "email": {
+            "message": "Email Address is invalid.",
+            "name": "ValidatorError"
+          }
+        },
+        "message": "Email Address is invalid",
         "name": "ValidationError"
       });
       res.end();
@@ -51,7 +58,6 @@ router.route('/')
           });
         }
         if (!rerData) {
-
           contact.password = md5(req.body.password);
           contact.save((err, contact) => {
             if (err) {
@@ -62,11 +68,6 @@ router.route('/')
         }
       });
     }
-
-
-
-
-
   });
 
 module.exports = router;
