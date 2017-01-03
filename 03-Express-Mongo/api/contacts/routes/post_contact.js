@@ -10,6 +10,7 @@ var responseData = require('../../../response');
 
 router.route('/')
   .post((req, res) => {
+    console.log(req.body);
     var rerData = req.body;
     rerData.user_key = uuid.v1();
     const contact = new Contact(rerData);
