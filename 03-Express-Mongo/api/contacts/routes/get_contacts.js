@@ -17,18 +17,19 @@ router.route('/:page')
 
     var pageNumber = req.params.page;
     console.log(pageNumber);
-    Contact.paginate({}, {select: 'first_name last_name email', page: pageNumber, limit: 5, sort: {created :'desc'} }, function (err, result) {
-
+    Contact.paginate({}, {page: pageNumber, limit: 5, sort: {created :'desc'} }, function (err, result) {
+      
       if (err) {
         res.status(400).json(err);
       }
       res.json(result);
-
+      console.log("in");
       // result.docs
       // result.total
       // result.limit - 10
       // result.offset - 20
     });
+    console.log("hii");
 
   });
 

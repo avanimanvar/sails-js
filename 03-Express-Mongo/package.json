@@ -23,6 +23,7 @@
     "mongodb-uri": "^0.9.7",
     "mongoose": "^4.5.7",
     "mongoose-paginate": "^1.0.0",
-    "node-uuid": "^1.4.7"
+    "node-uuid": "^1.4.7",
+    "request": "^2.79.0"
   }
 }

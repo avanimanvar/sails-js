@@ -11,6 +11,8 @@ var mongoosePaginate = require('mongoose-paginate');
 
 var validator = require("email-validator");
 
+var http = require('http');
+
 
 //file upload related module
 var fs = require('fs-extra');
@@ -59,6 +61,11 @@ mailer.extend(app, {
   }
 });
 
+app.get("/",function(req,res){
+  console.log("hiii");
+  res.sendFile(__dirname + "/index.html");
+});
+
 //file upload with busboy
 app.post('/upload', function (req, res) {
   req.pipe(req.busboy);
@@ -69,6 +76,8 @@ app.post('/upload', function (req, res) {
       res.json('upload succeeded!');
     });
   });
+
+
 
 });
 
@@ -118,12 +127,42 @@ app.post('/sendemail', function (req, res, next) {
   }
 });
 
+app.post('/get_weather_data', function (req, res) {
+  var city_name = req.body.city_name;
+  var response;
+  if (!city_name) {
+    res.json({ message: 'City name is not found' });
+  }
+  else {
+    var options = {
+      host: 'api.openweathermap.org',
+      path: '/data/2.5/forecast/daily?q=' + city_name + '&mode=json&units=metric&cnt=14&appid=75e843de569fb57a783c2e73fd9a7bb5',
+      method: 'GET'
+    }
+
+    var request = require('request');
+    request('http://api.openweathermap.org' + options.path, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        res.send(body);
+        return;
+      } else {
+        res.json({ message: "There is some error in response" });
+      }
+    })
+
+  }
+});
+
 app.use('/api/contacts', require('./api/contacts/routes/post_contact'));
 app.use('/api/contacts', require('./api/contacts/routes/get_contacts'));
 app.use('/api/contacts', require('./api/contacts/routes/get_contact'));
 app.use('/api/contacts', require('./api/contacts/routes/put_contact'));
 app.use('/api/contacts', require('./api/contacts/routes/delete_contact'));
 app.use('/api/auth/login', require('./api/contacts/routes/post_login'));
+
+app.use("*",function(req,res){
+  res.sendFile(__dirname + "/html/404.html");
+});
 
 const hostname = 'localhost';
 const port = 3001;
