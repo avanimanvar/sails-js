@@ -36,6 +36,7 @@ module.exports.routes = {
     view: 'homepage'
   },
   '/access_key/:publickey': 'AccessKeyController.index',
+  '/user/details/:id': 'UserController.details',
 
   /***************************************************************************
   *                                                                          *
