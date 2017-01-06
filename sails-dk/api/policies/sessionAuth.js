@@ -26,10 +26,6 @@ module.exports = function (req, res, next) {
     if (err) {
       return res.json({ success: false, message: 'Failed to authenticate token.' });
     } else {
-      // if everything is good, save to request for use in other routes
-      //req.decoded = decoded;
-      //next();
-      
       User.findOne({ id: decoded.user }).exec(function (err, records) {
         if (err) {
           return res.json({ success: false, message: "No data found" });
@@ -39,9 +35,7 @@ module.exports = function (req, res, next) {
           return res.forbidden('You are not permitted to perform this action.');
         }
         req.body.currentUserDetails = records;
-        
         next();
-
       });
     }
   });
