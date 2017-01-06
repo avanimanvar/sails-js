@@ -40,22 +40,15 @@ module.exports = {
             email: req.param('email'),
             password: req.param('password')
         }, function (err, user) {
-            // res.negotiate() will determine if this is a validation error
-            // or some kind of unexpected server error, then call `res.badRequest()`
-            // or `res.serverError()` accordingly.
-            if (err) return res.negotiate(err);
-
-            // Go ahead and log this user in as well.  We do this by issuing a JWT token for them.
+            if (err) {
+                return res.badRequest({ success: false, message: "Email already exits" });
+            }
             var token = jwt.sign({ user: user.id }, sails.config.jwtSecret, { expiresIn: sails.config.jwtExpires });
 
-            // If this is not an HTML-wanting browser, e.g. AJAX/sockets/cURL/etc.,
-            // send a 200 response letting the user agent know the signup was successful.
             if (req.wantsJSON) {
                 return res.json({ success: true, jwtoken: token });
             }
 
-            // Otherwise if this is an HTML-wanting browser, redirect to /welcome.
-            //return res.redirect('/welcome');
         });
     },
 
@@ -86,4 +79,5 @@ module.exports = {
 
     },
 };
+
 
