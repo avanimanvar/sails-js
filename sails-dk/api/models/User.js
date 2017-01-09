@@ -10,7 +10,8 @@ module.exports = {
   attributes: {
     email: {
       type: 'email',
-      required: true
+      required: true,
+      unique: true,
     },
     password: {
       type: 'string',
@@ -27,7 +28,7 @@ module.exports = {
     User.create({
       name: inputs.name,
       email: inputs.email,
-      name: inputs.name,
+
       // TODO: But encrypt the password first
       password: inputs.password
     })

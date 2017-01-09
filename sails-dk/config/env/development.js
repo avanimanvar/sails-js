@@ -22,7 +22,7 @@ module.exports = {
   },
 
   jwtSecret: 'mysuperdevsecret',
-  jwtExpires: 5,
+  jwtExpires: 50000000000000,
   hookTimeout: 400000,
   publicKey: '1de816f8-b48e-4d19-108c-51de830nkl-md'
 
