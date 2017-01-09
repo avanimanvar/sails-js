@@ -22,7 +22,8 @@ module.exports.policies = {
 UserController: {
    
     details: 'sessionAuth',
-    index: 'sessionAuth'
+    index: 'sessionAuth',
+    profiles: 'sessionAuth'
 }
 
   /***************************************************************************

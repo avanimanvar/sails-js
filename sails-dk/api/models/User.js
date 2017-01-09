@@ -21,6 +21,10 @@ module.exports = {
       type: 'string',
       required: true
     },
+    profile_photo: {
+      type: 'string',
+      required: false
+    },
   },
 
   signup: function (inputs, cb) {

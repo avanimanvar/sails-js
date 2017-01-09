@@ -9,7 +9,7 @@ var jwt = require('jsonwebtoken');
 
 module.exports = {
     index: function (req, res) {
-        User.find().paginate({ page: 1, limit: 2 }).exec(function (err, records) {
+        User.find().paginate({ page: 1, limit: 50 }).exec(function (err, records) {
             if (err) {
                 return res.json({ success: false, message: "No data found" });
             }
@@ -26,6 +26,35 @@ module.exports = {
                 return res.json({ success: false, message: "No data found" });
             }
             return res.json({ success: true, data: records });
+        });
+    },
+
+    profiles: function (req, res) {
+        var currntUserId = req.body.currentUserDetails.id;
+        req.file('avatar').upload({
+            dirname: require('path').resolve(sails.config.appPath, 'assets/images')
+        }, function (err, uploadedFiles) {
+
+            if (err) return res.json({ status: false, message: "Please try againg" });;
+            var fileNames = [];
+            uploadedFiles.forEach(function (value) {
+                fileNames.push(value.filename);
+            });
+            
+            if (fileNames.length > 1) {
+                var updateCondition = { profile_photo: JSON.stringify(fileNames), name: req.body.name };
+            } else {
+                var updateCondition = { name: req.body.name };
+            }
+            
+            User.update({ id: currntUserId }, updateCondition).exec(function afterwards(err, updated) {
+                if (err) {
+                    return res.json({ status: false, message: "Please try againg" });
+                }
+                return res.json({
+                    status: true, data: updated
+                });
+            });
         });
     },
 
