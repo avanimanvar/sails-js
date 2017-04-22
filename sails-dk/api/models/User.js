@@ -7,6 +7,7 @@
 
 module.exports = {
 
+// connection: 'someMysqlServer',
   attributes: {
     email: {
       type: 'email',

@@ -30,11 +30,11 @@ module.exports = function (req, res, next) {
         if (err) {
           return res.json({ success: false, message: "No data found" });
         }
-
+console.log(records);
         if (!records) {
           return res.forbidden('You are not permitted to perform this action.');
         }
-        req.body.currentUserDetails = records;
+        req.currentUserDetails = records;
         next();
       });
     }

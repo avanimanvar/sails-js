@@ -19,12 +19,12 @@
 
 module.exports.policies = {
 
-UserController: {
+//UserController: {
    
-    details: 'sessionAuth',
-    index: 'sessionAuth',
-    profiles: 'sessionAuth'
-}
+   // details: 'sessionAuth',
+   // index: 'sessionAuth',
+   // profiles: 'sessionAuth'
+//}
 
   /***************************************************************************
   *                                                                          *

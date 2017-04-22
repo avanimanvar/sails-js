@@ -18,19 +18,19 @@ module.exports = {
     },
 
     details: function (req, res) {
-        if (req.body.currentUserDetails) {
-            return res.json({ success: true, data: req.body.currentUserDetails });
+        if (req.currentUserDetails) {
+            return res.json({ success: true, data: req.currentUserDetails });
         }
         User.findOne({ id: req.params.id }).exec(function (err, records) {
             if (err) {
-                return res.json({ success: false, message: "No data found" });
+                return res.json({ success: false, message: err});
             }
             return res.json({ success: true, data: records });
         });
     },
 
     profiles: function (req, res) {
-        var currntUserId = req.body.currentUserDetails.id;
+        var currntUserId = req.currentUserDetails.id;
         req.file('avatar').upload({
             dirname: require('path').resolve(sails.config.appPath, 'assets/images')
         }, function (err, uploadedFiles) {
@@ -64,12 +64,16 @@ module.exports = {
     signup: function (req, res) {
 
         // Attempt to signup a user using the provided parameters
+        var name = req.param('name') ? req.param('name') : req.body.name;
+        var email = req.param('email') ? req.param('email') : req.body.email;
+        var password =  req.param('password') ? req.param('password') : req.body.password;
         User.signup({
-            name: req.param('name'),
-            email: req.param('email'),
-            password: req.param('password')
+            name: name,
+            email: email,
+            password: password
         }, function (err, user) {
             if (err) {
+                console.log(err);
                 return res.badRequest({ success: false, message: "Email already exits" });
             }
             var token = jwt.sign({ user: user.id }, sails.config.jwtSecret, { expiresIn: sails.config.jwtExpires });
@@ -85,8 +89,8 @@ module.exports = {
 
         // Look up the user
         User.attemptLogin({
-            email: req.param('email'),
-            password: req.param('password'),
+            email: req.param('email') ? req.param('email') : req.body.name,
+            password: req.param('password') ? req.param('password') : req.body.password,
         }, function (err, user) {
             if (err) return res.negotiate(err);
             if (!user) {
