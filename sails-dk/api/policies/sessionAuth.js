@@ -17,7 +17,7 @@ module.exports = function (req, res, next) {
   // if (req.session.authenticated) {
   //  return next();
   //}
-
+console.log(req.headers.jwtoken);
   if (!req.headers.jwtoken) {
     return res.forbidden({ success: false, message: 'You are not permitted to perform this action.' });
   }

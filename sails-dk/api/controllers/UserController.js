@@ -67,19 +67,20 @@ module.exports = {
         var name = req.param('name') ? req.param('name') : req.body.name;
         var email = req.param('email') ? req.param('email') : req.body.email;
         var password =  req.param('password') ? req.param('password') : req.body.password;
-        User.signup({
+        var dataObj = {
             name: name,
             email: email,
             password: password
-        }, function (err, user) {
+        };
+        User.signup(dataObj, function (err, user) {
             if (err) {
                 console.log(err);
-                return res.badRequest({ success: false, message: "Email already exits" });
+                return res.badRequest({ success: false,userData: dataObj, message: "Email already exits" });
             }
             var token = jwt.sign({ user: user.id }, sails.config.jwtSecret, { expiresIn: sails.config.jwtExpires });
 
             if (req.wantsJSON) {
-                return res.json({ success: true, jwtoken: token });
+                return res.json({ success: true, userData: user, jwtoken: token });
             }
 
         });
@@ -106,7 +107,7 @@ module.exports = {
             }
 
             var token = jwt.sign({ user: user.id }, sails.config.jwtSecret, { expiresIn: sails.config.jwtExpires });
-            return res.json({ success: true, token: token });
+            return res.json({ success: true, token: token, user });
 
         });
 
