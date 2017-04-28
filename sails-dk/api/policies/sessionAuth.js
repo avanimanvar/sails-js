@@ -17,12 +17,11 @@ module.exports = function (req, res, next) {
   // if (req.session.authenticated) {
   //  return next();
   //}
-console.log(req.headers.jwtoken);
-  if (!req.headers.jwtoken) {
+  if (!req.headers.jwtoken && !req.headers.authorization) {
     return res.forbidden({ success: false, message: 'You are not permitted to perform this action.' });
-  }
-
-  jwt.verify(req.headers.jwtoken, sails.config.jwtSecret, function (err, decoded) {
+  } 
+  var authorizationToken = req.headers.jwtoken ? req.headers.jwtoken : req.headers.authorization;
+  jwt.verify(authorizationToken, sails.config.jwtSecret, function (err, decoded) {
     if (err) {
       return res.json({ success: false, message: 'Failed to authenticate token.' });
     } else {
@@ -30,7 +29,6 @@ console.log(req.headers.jwtoken);
         if (err) {
           return res.json({ success: false, message: "No data found" });
         }
-console.log(records);
         if (!records) {
           return res.forbidden('You are not permitted to perform this action.');
         }

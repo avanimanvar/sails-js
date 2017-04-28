@@ -73,7 +73,8 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
- allRoutes: true,
-origin: '*',
-credentials: true
+  allRoutes: true,
+  origin: '*',
+  headers: 'Content-Type, Authorization',
+  credentials: true
 };
