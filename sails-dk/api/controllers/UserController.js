@@ -31,6 +31,9 @@ module.exports = {
 
     profiles: function (req, res) {
         var currntUserId = req.currentUserDetails.id;
+        
+        //console.log(req);
+        console.log(req.name);
         req.file('avatar').upload({
             dirname: require('path').resolve(sails.config.appPath, 'assets/images')
         }, function (err, uploadedFiles) {
@@ -40,7 +43,6 @@ module.exports = {
             uploadedFiles.forEach(function (value) {
                 fileNames.push(value.filename);
             });
-            
             if (fileNames.length > 1) {
                 var updateCondition = { profile_photo: JSON.stringify(fileNames), name: req.body.name };
             } else {
@@ -49,7 +51,7 @@ module.exports = {
             
             User.update({ id: currntUserId }, updateCondition).exec(function afterwards(err, updated) {
                 if (err) {
-                    return res.json({ status: false, message: "Please try againg" });
+                    return res.json({ status: false, message: err });
                 }
                 return res.json({
                     status: true, data: updated
